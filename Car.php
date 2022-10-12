@@ -1,52 +1,39 @@
 <?php
+require_once "Vehicle.php";
 
-class Car
+class Car extends Vehicle
+
 {
-    private int $nbWheels;
+    public const ALLOWED_ENERGIES = [
+        "fuel",
+        "electric",
+    ];
 
-    private int $currentSpeed;
-
-    private string $color;
-
-    private int $nbSeats;
-
-    private string $energy;
 
     private int $energyLevel;
 
-    private bool $start = false;
-
-    public function __construct(string $color, int $nbSeats, string $energyType)
+    public function __construct(string $color, int $nbSeats, string $energy)
     {
-        $this->color = $color;
-        $this->nbSeats = $nbSeats;
-        $this->energyType = $energyType;
+        parent::__construct($color, $nbSeats);
+        $this->energy = $energy;
     }
 
-    public function startCar(): bool
-    {
-        return $this->start = true;
-    }
 
-    public function forward(): string
+    public function setEnergyCar(string $energy): Car
     {
-        if ($this->start === false) {
-            return "You have to start the car to move forward!!!";
-        } else {
-            $this->currentSpeed = 35;
-
-            return "Go !";
+        if (in_array($energy, self::ALLOWED_ENERGIES)) {
+            $this->energy = $energy;
         }
+        return $this;
     }
 
-    public function brake(): string
+    public function getEnergyLevel(): int
     {
-        $sentence = "";
-        while ($this->currentSpeed > 0) {
-            $this->currentSpeed--;
-            $sentence .= "Brake !!!";
-        }
-        $sentence .= "I'm stopped !";
-        return $sentence;
+        return $this->energyLevel;
+    }
+
+    public function setEnergyLevel(int $energyLevel): void
+    {
+        $this->energyLevel = $energyLevel;
     }
 }
